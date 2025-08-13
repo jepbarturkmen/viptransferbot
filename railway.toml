@@ -1,4 +1,4 @@
 [deploy]
-startCommand = "python viptransferbot/main.py"
+startCommand = "python main.py"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
