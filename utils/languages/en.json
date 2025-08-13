@@ -1,0 +1,82 @@
+{
+  "app": {
+    "back": "⬅️ Back",
+    "cancel": "❌ Cancel",
+    "save": "💾 Save",
+    "yes": "Yes",
+    "no": "No",
+    "loading": "Loading…",
+    "choose_language": "Please choose a language:",
+    "language_saved": "Language saved ✅"
+  },
+  "menu": {
+    "title": "Main Menu",
+    "new_booking": "🆕 New Booking",
+    "upload_pdf": "📎 Upload PDF/Image (flight/hotel)",
+    "contact_dispatcher": "🗣️ Contact Dispatcher"
+  },
+  "booking": {
+    "title": "New Booking",
+    "choose_direction": "Where should we pick you up?",
+    "from_airport": "✈️ From Airport",
+    "from_hotel": "🏨 From Hotel",
+    "from_aratransfer": "➡️ Mid-route (Custom)",
+    "ask_pickup_location": "📍 Choose or search the pickup location:",
+    "ask_custom_address": "Please share the address or pick from the list.",
+    "ask_dropoff_type": "Where is the drop-off?",
+    "to_airport": "✈️ To Airport",
+    "to_hotel": "🏨 To Hotel",
+    "to_aratransfer": "➡️ Mid-route (Custom)",
+    "ask_dropoff_location": "📍 Choose or search the drop-off location:",
+    "ask_date": "📅 Select date:",
+    "ask_time": "⏰ Select time:",
+    "ask_pax": "👥 How many passengers?",
+    "pax_1": "1",
+    "pax_2": "2",
+    "pax_3": "3",
+    "pax_4": "4",
+    "pax_5": "5",
+    "pax_5_15": "5–15",
+    "pax_15_plus": "15+",
+    "ask_baby_seat": "🧒🏻 Need a baby seat?",
+    "ask_extras": "📝 Any extra requests? (Or press 'Skip')",
+    "extras_skip": "Skip",
+    "ask_flight_number": "✈️ Flight number (if any):",
+    "ask_flight_time": "🕒 Flight arrival/departure time (if any):",
+    "ask_name": "👤 Full name of the booker:",
+    "ask_phone": "📞 Phone number with country code (+1, +44…):",
+    "confirm_details": "Please confirm the details:",
+    "confirm_yes": "✅ Confirm",
+    "confirm_no": "⬅️ Edit",
+    "summary_title": "📄 Booking Summary",
+    "summary_text": "Name: {name}\nPhone: {phone}\nDate: {date} {time}\nFrom: {from}\nTo: {to}\nPAX: {pax}\nBaby seat: {baby_seat}\nExtras: {extras}\nFlight: {flight}",
+    "submitted": "Thanks! Your booking request has been received ✅",
+    "sending_to_admin": "Sending details to the dispatcher…"
+  },
+  "upload": {
+    "title": "File Upload",
+    "ask_file": "Please send a PDF or image (flight/hotel info).",
+    "file_received": "File received ✅",
+    "invalid_file": "Invalid file type. Send PDF/JPG/PNG."
+  },
+  "contact": {
+    "title": "Contact Dispatcher",
+    "message_to_dispatcher": "The operator will contact you as soon as possible.",
+    "sent": "Your message was sent ✅",
+    "dispatcher_contact": "Dispatcher: @dispatcher"
+  },
+  "errors": {
+    "generic": "An error occurred. Please try again.",
+    "timeout": "Timed out. Please restart the flow.",
+    "unknown_command": "I couldn't recognize that command."
+  },
+  "validation": {
+    "phone_invalid": "Invalid phone format. Include + country code.",
+    "date_invalid": "Invalid date.",
+    "time_invalid": "Invalid time."
+  },
+  "sheet": {
+    "saved": "Saved to Google Sheets ✅",
+    "failed": "Failed to save to Sheets ❌"
+  }
+}

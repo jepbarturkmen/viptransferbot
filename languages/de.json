@@ -1,0 +1,82 @@
+{
+  "app": {
+    "back": "⬅️ Zurück",
+    "cancel": "❌ Abbrechen",
+    "save": "💾 Speichern",
+    "yes": "Ja",
+    "no": "Nein",
+    "loading": "Lädt…",
+    "choose_language": "Bitte Sprache auswählen:",
+    "language_saved": "Sprache gespeichert ✅"
+  },
+  "menu": {
+    "title": "Hauptmenü",
+    "new_booking": "🆕 Neue Buchung",
+    "upload_pdf": "📎 PDF/Bild hochladen (Flug/Hotel)",
+    "contact_dispatcher": "🗣️ Dispatcher kontaktieren"
+  },
+  "booking": {
+    "title": "Neue Buchung",
+    "choose_direction": "Wo sollen wir Sie abholen?",
+    "from_airport": "✈️ Vom Flughafen",
+    "from_hotel": "🏨 Vom Hotel",
+    "from_aratransfer": "➡️ Zwischenstopp (benutzerdefiniert)",
+    "ask_pickup_location": "📍 Abholort wählen oder suchen:",
+    "ask_custom_address": "Adresse teilen oder aus Liste wählen.",
+    "ask_dropoff_type": "Wohin ist die Abgabe?",
+    "to_airport": "✈️ Zum Flughafen",
+    "to_hotel": "🏨 Zum Hotel",
+    "to_aratransfer": "➡️ Zwischenstopp (benutzerdefiniert)",
+    "ask_dropoff_location": "📍 Abgabeort wählen oder suchen:",
+    "ask_date": "📅 Datum wählen:",
+    "ask_time": "⏰ Uhrzeit wählen:",
+    "ask_pax": "👥 Wie viele Personen?",
+    "pax_1": "1",
+    "pax_2": "2",
+    "pax_3": "3",
+    "pax_4": "4",
+    "pax_5": "5",
+    "pax_5_15": "5–15",
+    "pax_15_plus": "15+",
+    "ask_baby_seat": "🧒🏻 Kindersitz benötigt?",
+    "ask_extras": "📝 Zusätzliche Wünsche? (oder „Überspringen“)",
+    "extras_skip": "Überspringen",
+    "ask_flight_number": "✈️ Flugnummer (optional):",
+    "ask_flight_time": "🕒 Ankunfts-/Abflugzeit (optional):",
+    "ask_name": "👤 Vollständiger Name des Buchenden:",
+    "ask_phone": "📞 Telefonnummer mit Ländervorwahl (+49 usw.):",
+    "confirm_details": "Bitte Details bestätigen:",
+    "confirm_yes": "✅ Bestätigen",
+    "confirm_no": "⬅️ Bearbeiten",
+    "summary_title": "📄 Buchungsübersicht",
+    "summary_text": "Name: {name}\nTelefon: {phone}\nDatum: {date} {time}\nVon: {from}\nNach: {to}\nPersonen: {pax}\nKindersitz: {baby_seat}\nExtras: {extras}\nFlug: {flight}",
+    "submitted": "Danke! Ihre Anfrage wurde erhalten ✅",
+    "sending_to_admin": "Details werden an den Dispatcher gesendet…"
+  },
+  "upload": {
+    "title": "Datei-Upload",
+    "ask_file": "Bitte PDF oder Bild senden (Flug/Hotelinfo).",
+    "file_received": "Datei empfangen ✅",
+    "invalid_file": "Ungültiger Dateityp. Senden Sie PDF/JPG/PNG."
+  },
+  "contact": {
+    "title": "Dispatcher kontaktieren",
+    "message_to_dispatcher": "Nachricht an den Dispatcher schreiben:",
+    "sent": "Nachricht gesendet ✅",
+    "dispatcher_contact": "Dispatcher: @dispatcher"
+  },
+  "errors": {
+    "generic": "Ein Fehler ist aufgetreten. Bitte erneut versuchen.",
+    "timeout": "Zeitüberschreitung. Bitte neu starten.",
+    "unknown_command": "Befehl nicht erkannt."
+  },
+  "validation": {
+    "phone_invalid": "Telefonformat ungültig. + Ländervorwahl angeben.",
+    "date_invalid": "Ungültiges Datum.",
+    "time_invalid": "Ungültige Uhrzeit."
+  },
+  "sheet": {
+    "saved": "In Google Sheets gespeichert ✅",
+    "failed": "Speichern in Sheets fehlgeschlagen ❌"
+  }
+}

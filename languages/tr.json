@@ -1,0 +1,82 @@
+{
+  "app": {
+    "back": "⬅️ Geri",
+    "cancel": "❌ İptal",
+    "save": "💾 Kaydet",
+    "yes": "Evet",
+    "no": "Hayır",
+    "loading": "Yükleniyor…",
+    "choose_language": "Lütfen bir dil seçin:",
+    "language_saved": "Dil kaydedildi ✅"
+  },
+  "menu": {
+    "title": "Ana Menü",
+    "new_booking": "🆕 Yeni Rezervasyon",
+    "upload_pdf": "📎 PDF/Görsel Yükle (uçuş/otel)",
+    "contact_dispatcher": "🗣️ Operatör ile İletişim"
+  },
+  "booking": {
+    "title": "Yeni Rezervasyon",
+    "choose_direction": "Nereden alalım?",
+    "from_airport": "✈️ Havaalanından",
+    "from_hotel": "🏨 Otelden",
+    "from_aratransfer": "➡️ Ara Transfer",
+    "ask_pickup_location": "📍 Alınacak konumu listeden seçin veya arayın:",
+    "ask_custom_address": "Lütfen açık adres yazın ya da listeden seçin.",
+    "ask_dropoff_type": "Nereye bırakacağız?",
+    "to_airport": "✈️ Havaalanına",
+    "to_hotel": "🏨 Otele",
+    "to_aratransfer": "➡️ Ara Transfer",
+    "ask_dropoff_location": "📍 Bırakılacak konumu seçin veya arayın:",
+    "ask_date": "📅 Tarih seçin:",
+    "ask_time": "⏰ Saat seçin:",
+    "ask_pax": "👥 Kaç kişi?",
+    "pax_1": "1",
+    "pax_2": "2",
+    "pax_3": "3",
+    "pax_4": "4",
+    "pax_5": "5",
+    "pax_5_15": "5–15",
+    "pax_15_plus": "15+",
+    "ask_baby_seat": "🧒🏻 Bebek koltuğu istiyor musunuz?",
+    "ask_extras": "📝 Ekstra istekler var mı? (Yoksa 'Atla'ya basın)",
+    "extras_skip": "Atla",
+    "ask_flight_number": "✈️ Uçuş numarası (varsa):",
+    "ask_flight_time": "🕒 Uçuş varış/kalkış saati (varsa):",
+    "ask_name": "👤 Rezervasyon yapanın adı soyadı:",
+    "ask_phone": "📞 Ülke kodlu telefon numarası (+90 gibi):",
+    "confirm_details": "Lütfen bilgileri onaylayın:",
+    "confirm_yes": "✅ Onayla",
+    "confirm_no": "⬅️ Düzelt",
+    "summary_title": "📄 Rezervasyon Özeti",
+    "summary_text": "İsim: {name}\nTelefon: {phone}\nTarih: {date} {time}\nNereden: {from}\nNereye: {to}\nKişi: {pax}\nBebek koltuğu: {baby_seat}\nEkstralar: {extras}\nUçuş: {flight}",
+    "submitted": "Teşekkürler! Rezervasyon isteğiniz alındı ✅",
+    "sending_to_admin": "Bilgiler operatöre iletiliyor…"
+  },
+  "upload": {
+    "title": "Dosya Yükleme",
+    "ask_file": "PDF veya görsel dosyayı gönderin (uçuş/otel bilgisi).",
+    "file_received": "Dosya alındı ✅",
+    "invalid_file": "Geçersiz dosya türü. Lütfen PDF/JPG/PNG gönderin."
+  },
+  "contact": {
+    "title": "Operatör ile İletişim",
+    "message_to_dispatcher": "Operatöre iletmek istediğiniz mesajı yazın:",
+    "sent": "Mesajınız iletildi ✅",
+    "dispatcher_contact": "Operatör: @dispatcher"
+  },
+  "errors": {
+    "generic": "Bir hata oluştu. Lütfen tekrar deneyin.",
+    "timeout": "Zaman aşımı. Akışı yeniden başlatın lütfen.",
+    "unknown_command": "Bu komutu anlayamadım."
+  },
+  "validation": {
+    "phone_invalid": "Telefon formatı hatalı. + ülke kodu ile deneyin.",
+    "date_invalid": "Tarih geçersiz.",
+    "time_invalid": "Saat geçersiz."
+  },
+  "sheet": {
+    "saved": "Rezervasyon Google Sheets'e kaydedildi ✅",
+    "failed": "Sheets kaydı başarısız oldu ❌"
+  }
+}
