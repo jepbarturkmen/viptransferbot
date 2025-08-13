@@ -1,4 +1,4 @@
 [deploy]
-startCommand = "python vip_bot_fix20/vip_bot/main.py"
+startCommand = "python main.py"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
