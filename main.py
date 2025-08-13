@@ -6,7 +6,23 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
+import os
 import logging
+
+# LOG_LEVEL env ile yönetilebilir; varsayılan WARNING
+LOG_LEVEL = os.getenv("LOG_LEVEL", "WARNING").upper()
+level = getattr(logging, LOG_LEVEL, logging.WARNING)
+
+logging.basicConfig(
+    level=level,
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+)
+
+# Gürültülü logger'ları kıstık (HTTP istekleri, scheduler vs.)
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("apscheduler").setLevel(logging.WARNING)
+logging.getLogger("telegram").setLevel(logging.WARNING)
+logging.getLogger("telegram.ext").setLevel(logging.WARNING)
 
 from config import TOKEN
 from handlers.start_handler import start, language_selected, show_main_menu
