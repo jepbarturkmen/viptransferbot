@@ -1,7 +1,7 @@
 # Railway Deployment Notes
 
 ## Start Command
-- `python vip_bot_fix20/vip_bot/main.py`
+- `python main.py`
 
 ## Env Vars (set in Railway → Variables)
 - `TOKEN` : your Telegram bot token
