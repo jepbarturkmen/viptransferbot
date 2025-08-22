@@ -1,8 +1,6 @@
 import os
 import logging
 import asyncio
-import logging
-logging.getLogger("vipbot").info("ENV token var mı? %s", "yes" if TOKEN else "no")
 
 from telegram import Update
 from telegram.ext import (
@@ -41,7 +39,8 @@ from handlers.start_handler import start, language_selected, show_main_menu
 from handlers.booking_handler import booking_conversation_handler
 from handlers.upload_pdf import ask_for_pdf, receive_pdf
 from handlers.contact_dispatcher import ask_contact, receive_contact_message
-
+import logging
+logging.getLogger("vipbot").info("ENV token var mı? %s", "yes" if TOKEN else "no")
 
 # -----------------------------
 # BASİT SAĞLIK / TEST KOMUTLARI (opsiyonel)
