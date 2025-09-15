@@ -9,6 +9,10 @@ from handlers.passenger_info_handler import (
     ask_baby_seat, receive_baby_seat, receive_notes, receive_notes_skip
 )
 from handlers.confirm_handler import confirm_booking, cancel_booking
+from handlers.extra_info_handler import (
+    ask_flight_number_if_airport, receive_flight_number,
+    ask_meeting_time, receive_meeting_time,
+)
 from handlers.states import (
     ASK_PICKUP_TYPE,
     WAITING_PICKUP_CATEGORY,
@@ -28,6 +32,11 @@ from handlers.states import (
     WAITING_NOTES,
     SHOW_SUMMARY,
     WAITING_CONFIRMATION,
+    ASK_FLIGHT_NUMBER,
+    WAITING_FLIGHT_NUMBER,
+    ASK_MEETING_TIME,
+    WAITING_MEETING_TIME,
+
 )
 
 async def _end_to_menu(update, context):
@@ -68,6 +77,20 @@ booking_conversation_handler = ConversationHandler(
         WAITING_TIME: [
             CallbackQueryHandler(receive_time, pattern=r'^time_'),
             CallbackQueryHandler(back_to_date, pattern=r'^back_to_date$'),
+        ],
+        ASK_FLIGHT_NUMBER: [
+            MessageHandler(filters.TEXT & ~filters.COMMAND, receive_flight_number),
+            CallbackQueryHandler(receive_flight_number, pattern=r'^(flight_skip)$'),
+        ],
+        WAITING_FLIGHT_NUMBER: [
+            MessageHandler(filters.TEXT & ~filters.COMMAND, receive_flight_number),
+            CallbackQueryHandler(receive_flight_number, pattern=r'^(flight_skip)$'),
+        ],
+        ASK_MEETING_TIME: [
+            CallbackQueryHandler(receive_meeting_time, pattern=r'^(meet_|meet_skip)')
+        ],
+        WAITING_MEETING_TIME: [
+            CallbackQueryHandler(receive_meeting_time, pattern=r'^(meet_|meet_skip)')
         ],
 
         # pax → personal info

@@ -5,6 +5,7 @@ from utils.state import UserState
 from utils.excel_reader import get_airport_list, get_hotel_list
 from utils.date_picker import generate_date_keyboard
 from utils.time_picker import generate_time_keyboard
+from handlers.extra_info_handler import ask_flight_number_if_airport, ask_meeting_time
 from handlers.states import WAITING_DROPOFF_CATEGORY, WAITING_DROPOFF_LOCATION, ASK_DATE, WAITING_DATE, ASK_TIME, WAITING_TIME, ASK_PASSENGER_COUNT, WAITING_NAME
 
 def _pax_keyboard(tr):
@@ -124,9 +125,11 @@ async def receive_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tr = load_translations(lang)
     picked = q.data.replace("time_","")
     UserState.set(user_id, "time", picked)
-    # proceed to passenger count
-    await q.message.edit_text(tr.get("booking.ask_pax","How many passengers?"), reply_markup=_pax_keyboard(tr))
-    return ASK_PASSENGER_COUNT
+# proceed to flight/meeting steps
+state = await ask_flight_number_if_airport(update, context)
+if state is None:
+    state = await ask_meeting_time(update, context)
+return state
 
 async def receive_passenger_count(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
