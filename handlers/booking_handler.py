@@ -87,10 +87,10 @@ booking_conversation_handler = ConversationHandler(
             CallbackQueryHandler(receive_flight_number, pattern=r'^(flight_skip)$'),
         ],
         ASK_MEETING_TIME: [
-            CallbackQueryHandler(receive_meeting_time, pattern=r'^(meet_|meet_skip)')
+            CallbackQueryHandler(receive_meeting_time, pattern=r'^(meet_|meet_skip)'),
         ],
         WAITING_MEETING_TIME: [
-            CallbackQueryHandler(receive_meeting_time, pattern=r'^(meet_|meet_skip)')
+            CallbackQueryHandler(receive_meeting_time, pattern=r'^(meet_|meet_skip)'),
         ],
 
         # pax → personal info

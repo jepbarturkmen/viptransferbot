@@ -12,14 +12,9 @@ async def confirm_booking(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # language
     lang = UserState.get(uid).get("language", context.user_data.get("lang", "tr"))
-    tr = load_translations(lang)
-pickup = UserState.get(uid).get('pickup_location', '-')
-dropoff = UserState.get(uid).get('dropoff_location', '-')
-date = UserState.get(uid).get('date', '-')
-time = UserState.get(uid).get('time', '-')
-flight = UserState.get(uid).get('flight_number', '-')
-meeting_time = UserState.get(uid).get('meeting_time', '-')
-
+    \1
+    flight_number = UserState.get(uid).get('flight_number', '-')
+    meeting_time = UserState.get(uid).get('meeting_time', '-')
 
     # gather booking data
     st = UserState.get(uid)
@@ -48,8 +43,7 @@ meeting_time = UserState.get(uid).get('meeting_time', '-')
 👶 <b>Bebek Koltuğu:</b> {baby}
 🗒️ <b>Ekstra:</b> {extras}
 📅 <b>Tarih:</b> {date} {time}
-✈️ <b>Uçuş:</b> {flight}
-⏰ <b>Meeting Time:</b> {meeting_time}
+✈️ <b>Uçuş:</b> {flight}\n⏰ <b>Meeting Time:</b> {meeting_time}
 """
     await context.bot.send_message(chat_id=ADMIN_USER_ID, text=admin_message, parse_mode="HTML")
 
