@@ -12,9 +12,9 @@ async def confirm_booking(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # language
     lang = UserState.get(uid).get("language", context.user_data.get("lang", "tr"))
-    \1
-    flight_number = UserState.get(uid).get('flight_number', '-')
-    meeting_time = UserState.get(uid).get('meeting_time', '-')
+    tr = load_translations(lang)
+    flight_number = UserState.get(uid).get("flight_number", "-")
+    meeting_time = UserState.get(uid).get("meeting_time", "-")
 
     # gather booking data
     st = UserState.get(uid)
