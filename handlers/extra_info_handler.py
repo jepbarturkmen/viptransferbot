@@ -18,10 +18,7 @@ def _meeting_keyboard():
             keyboard.append(row); row = []
     if row:
         keyboard.append(row)
-    # add back/skip row
-    keyboard.append([
-        InlineKeyboardButton("Skip ➡️", callback_data="meet_skip"),
-    ])
+    keyboard.append([InlineKeyboardButton("Skip ➡️", callback_data="meet_skip")])
     return InlineKeyboardMarkup(keyboard)
 
 def _pax_keyboard(tr):
@@ -37,31 +34,26 @@ def _pax_keyboard(tr):
     ])
 
 async def ask_flight_number_if_airport(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Ask flight no only if either leg is airport; otherwise go to meeting time."""
     user_id = update.effective_user.id
     lang = UserState.get(user_id).get("language", "en")
     tr = load_translations(lang)
 
     pick = context.user_data.get("pickup_category", "")
     drop = context.user_data.get("dropoff_category", "")
-    airport_involved = any(k in (pick, drop) for k in ("pickup_airport","dropoff_category_airport"))
+    airport_involved = ("pickup_airport" in (pick or "")) or ("dropoff_category_airport" in (drop or ""))
 
     msg = update.callback_query.message if update.callback_query else update.effective_message
 
     if airport_involved:
         await msg.reply_text(tr.get("extra.ask_flight_no", "Please enter flight number (e.g., TK123). You can also Skip."),
-                             reply_markup=InlineKeyboardMarkup([[
-                                 InlineKeyboardButton(tr.get("app.skip","Skip ➡️"), callback_data="flight_skip"),
-                             ]]))
+                             reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(tr.get("app.skip","Skip ➡️"), callback_data="flight_skip")]]))
         return WAITING_FLIGHT_NUMBER
-    # else skip to meeting time
     return await ask_meeting_time(update, context)
 
 async def receive_flight_number(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     lang = UserState.get(user_id).get("language", "en")
     tr = load_translations(lang)
-
     if update.callback_query:
         q = update.callback_query
         await q.answer()
@@ -69,9 +61,7 @@ async def receive_flight_number(update: Update, context: ContextTypes.DEFAULT_TY
             UserState.set(user_id, "flight_number", None)
             await q.message.reply_text(tr.get("extra.flight_saved","Saved ✅"))
             return await ask_meeting_time(update, context)
-        msg = q.message
-        # unexpected -> pass through to meeting time
-        await msg.reply_text(tr.get("extra.flight_saved","Saved ✅"))
+        await q.message.reply_text(tr.get("extra.flight_saved","Saved ✅"))
         return await ask_meeting_time(update, context)
     else:
         msg = update.effective_message
@@ -103,6 +93,5 @@ async def receive_meeting_time(update: Update, context: ContextTypes.DEFAULT_TYP
         mt = data.replace("meet_","",1)
         UserState.set(user_id, "meeting_time", mt)
     await q.message.reply_text(tr.get("extra.meeting_saved","Saved ✅"))
-    # Continue to passenger count like original flow
     await q.message.edit_text(tr.get("booking.ask_pax","How many passengers?"), reply_markup=_pax_keyboard(tr))
     return ASK_PASSENGER_COUNT
