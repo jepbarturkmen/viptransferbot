@@ -1,0 +1,28 @@
+
+# --- PATCH INSTRUCTIONS ---
+from handlers.extra_info_handler import (
+    ask_flight_number_if_airport, receive_flight_number,
+    ask_meeting_time, receive_meeting_time,
+)
+
+# Add to states list:
+#     ASK_FLIGHT_NUMBER,
+#     WAITING_FLIGHT_NUMBER,
+#     ASK_MEETING_TIME,
+#     WAITING_MEETING_TIME,
+
+# Add to ConversationHandler mapping:
+#     ASK_FLIGHT_NUMBER: [
+#         MessageHandler(filters.TEXT & ~filters.COMMAND, receive_flight_number),
+#         CallbackQueryHandler(receive_flight_number, pattern=r'^(flight_skip)$'),
+#     ],
+#     WAITING_FLIGHT_NUMBER: [
+#         MessageHandler(filters.TEXT & ~filters.COMMAND, receive_flight_number),
+#         CallbackQueryHandler(receive_flight_number, pattern=r'^(flight_skip)$'),
+#     ],
+#     ASK_MEETING_TIME: [
+#         CallbackQueryHandler(receive_meeting_time, pattern=r'^(meet_|meet_skip)'),
+#     ],
+#     WAITING_MEETING_TIME: [
+#         CallbackQueryHandler(receive_meeting_time, pattern=r'^(meet_|meet_skip)'),
+#     ],

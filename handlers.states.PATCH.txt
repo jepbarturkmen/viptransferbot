@@ -1,0 +1,7 @@
+
+# --- PATCH INSTRUCTIONS for handlers/states.py ---
+# Append these constants to the tuple and increase range size by 4:
+#     ASK_FLIGHT_NUMBER,
+#     WAITING_FLIGHT_NUMBER,
+#     ASK_MEETING_TIME,
+#     WAITING_MEETING_TIME,

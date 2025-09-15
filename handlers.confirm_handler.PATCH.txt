@@ -1,0 +1,8 @@
+
+# --- Optional PATCH for handlers/confirm_handler.py ---
+# In confirm summary, you may include (if available):
+#   ✈️ Flight: {flight_number}
+#   ⏰ Meeting Time: {meeting_time}
+# Read them via:
+#   flight_number = UserState.get(uid).get('flight_number', '-')
+#   meeting_time = UserState.get(uid).get('meeting_time', '-')
