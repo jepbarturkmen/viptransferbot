@@ -1,6 +1,3 @@
-
-# Central conversation state constants (
-    integers)
 (
     ASK_PICKUP_TYPE,
     WAITING_PICKUP_CATEGORY,
@@ -19,9 +16,10 @@
     WAITING_BABY_SEAT,
     WAITING_NOTES,
     SHOW_SUMMARY,
-    WAITING_CONFIRMATION,,
+    WAITING_CONFIRMATION,
+    # yeni eklenen state’ler
     ASK_FLIGHT_NUMBER,
     WAITING_FLIGHT_NUMBER,
     ASK_MEETING_TIME,
     WAITING_MEETING_TIME,
-) = range(26)
+) = range(22)  # eski sayı +4 olacak şekilde güncellendi
