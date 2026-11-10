@@ -9,8 +9,9 @@ Google Sheets entegrasyonu için adımlar (güncellendi) — 2025-08-13
    - “IAM & Admin > Service Accounts” → “Create service account”
    - Bir ad ver, devam et; “Create & Continue” de geçebilir.
    - “Keys” sekmesinde → “Add key” → “Create new key” → JSON anahtar indir.
-   - Bu dosyayı projende `vip_bot/credentials/credentials.json` olarak kaydet (veya
+   - Bu dosyayı projende `credentials/credentials.json` olarak kaydet (veya
      `GOOGLE_APPLICATION_CREDENTIALS` çevre değişkenine tam yol olarak yaz).
+   - JSON anahtarını Git'e ekleme veya repoya commit etme.
 
 3) Google Sheet hazırlanması
    - Google Drive'da bir Sheet oluştur: örn. “VIP Transfer Bookings”.
@@ -19,7 +20,7 @@ Google Sheets entegrasyonu için adımlar (güncellendi) — 2025-08-13
      `SHEETS_SPREADSHEET_ID` çevre değişkenine yaz ya da .env/config’e ekle.
 
 4) Python paketleri
-   pip install gspread google-auth
+   pip install -r requirements.txt
 
 5) Yapılandırma (tercih)
    - Ortam değişkenleri:
@@ -28,9 +29,9 @@ Google Sheets entegrasyonu için adımlar (güncellendi) — 2025-08-13
      # ID vermek istemezsen isimle de çalışır (SHEETS_SPREADSHEET_NAME).
 
 6) Kod tarafı
-   - `sheet_service.py` (bu patch içinde) modern kimlik doğrulama ile çalışır.
-   - `handlers/confirm_handler.py` rezervasyon onayında Sheets’e satır ekler.
-   - Hata olursa bot çökmez; log’a yazar ve devam eder.
+   - Onaylanan rezervasyon önce Railway PostgreSQL veritabanına kaydedilir.
+   - Google Sheets aktarımı dayanıklı olarak sıraya alınır; geçici bağlantı/kimlik doğrulama hatalarında yeniden denenir.
+   - Tekrarlanan denemeler aynı rezervasyon için mükerrer satır oluşturmaz.
 
 7) Sheet kolon şeması (ilk sayfa / Sheet1)
    A: Name
@@ -44,3 +45,5 @@ Google Sheets entegrasyonu için adımlar (güncellendi) — 2025-08-13
    I: Time
    J: Flight
    K: TelegramUserId
+   L: Meeting Time
+   M: Booking ID (bot tarafından dışa aktarma tekrarlarını tanımak için eklenir)

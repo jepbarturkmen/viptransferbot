@@ -26,6 +26,7 @@
     "ask_dropoff_type": "Nereye bırakacağız?",
     "to_airport": "✈️ Havaalanına",
     "to_hotel": "🏨 Otele",
+    "to_custom": "📍 Başka adres",
     "to_aratransfer": "➡️ Ara Transfer",
     "ask_dropoff_location": "📍 Bırakılacak konumu seçin veya arayın:",
     "ask_date": "📅 Tarih seçin:",
@@ -50,7 +51,13 @@
     "confirm_no": "⬅️ Düzelt",
     "summary_title": "📄 Rezervasyon Özeti",
     "summary_text": "İsim: {name}\nTelefon: {phone}\nTarih: {date} {time}\nNereden: {from}\nNereye: {to}\nKişi: {pax}\nBebek koltuğu: {baby_seat}\nEkstralar: {extras}\nUçuş: {flight}",
+    "summary_meeting_time": "Buluşma saati: {meeting_time}",
     "submitted": "Teşekkürler! Rezervasyon isteğiniz alındı ✅",
+    "cancelled": "Rezervasyon iptal edildi.",
+    "invalid": "Rezervasyon bilgilerinden bazıları eksik veya geçersiz. Lütfen kontrol edin.",
+    "invalid_name": "Lütfen 2 ile 100 karakter arasında bir ad girin.",
+    "invalid_phone": "Lütfen ülke koduyla geçerli bir telefon numarası girin.",
+    "save_failed": "Rezervasyonunuz şu anda kaydedilemedi. Lütfen tekrar deneyin.",
     "sending_to_admin": "Bilgiler operatöre iletiliyor…"
   },
   "upload": {

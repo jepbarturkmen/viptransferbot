@@ -2,7 +2,6 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import ContextTypes
 from utils.language_loader import load_translations
-from utils.state import UserState
 from handlers.states import (
     ASK_FLIGHT_NUMBER, WAITING_FLIGHT_NUMBER,
     ASK_MEETING_TIME, WAITING_MEETING_TIME,
@@ -34,8 +33,7 @@ def _pax_keyboard(tr):
     ])
 
 async def ask_flight_number_if_airport(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    lang = UserState.get(user_id).get("language", "en")
+    lang = context.user_data.get("language", "en")
     tr = load_translations(lang)
 
     pick = context.user_data.get("pickup_category", "")
@@ -51,14 +49,13 @@ async def ask_flight_number_if_airport(update: Update, context: ContextTypes.DEF
     return await ask_meeting_time(update, context)
 
 async def receive_flight_number(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    lang = UserState.get(user_id).get("language", "en")
+    lang = context.user_data.get("language", "en")
     tr = load_translations(lang)
     if update.callback_query:
         q = update.callback_query
         await q.answer()
         if q.data == "flight_skip":
-            UserState.set(user_id, "flight_number", None)
+            context.user_data["flight_number"] = None
             await q.message.reply_text(tr.get("extra.flight_saved","Saved ✅"))
             return await ask_meeting_time(update, context)
         await q.message.reply_text(tr.get("extra.flight_saved","Saved ✅"))
@@ -66,14 +63,18 @@ async def receive_flight_number(update: Update, context: ContextTypes.DEFAULT_TY
     else:
         msg = update.effective_message
         text = (msg.text or "").strip()
+        if len(text) > 30:
+            await msg.reply_text(
+                tr.get("booking.invalid", "Please enter a shorter flight number.")
+            )
+            return WAITING_FLIGHT_NUMBER
         if text:
-            UserState.set(user_id, "flight_number", text)
+            context.user_data["flight_number"] = text
         await msg.reply_text(tr.get("extra.flight_saved","Saved ✅"))
         return await ask_meeting_time(update, context)
 
 async def ask_meeting_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    lang = UserState.get(user_id).get("language", "en")
+    lang = context.user_data.get("language", "en")
     tr = load_translations(lang)
     msg = update.callback_query.message if update.callback_query else update.effective_message
     await msg.reply_text(tr.get("extra.ask_meeting_time","Please select meeting time"),
@@ -83,15 +84,17 @@ async def ask_meeting_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def receive_meeting_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
-    user_id = q.from_user.id
-    lang = UserState.get(user_id).get("language", "en")
+    lang = context.user_data.get("language", "en")
     tr = load_translations(lang)
     data = q.data
     if data == "meet_skip":
-        UserState.set(user_id, "meeting_time", None)
+        context.user_data["meeting_time"] = None
     elif data.startswith("meet_"):
         mt = data.replace("meet_","",1)
-        UserState.set(user_id, "meeting_time", mt)
+        if mt not in {f"{h:02d}:{m:02d}" for h in range(24) for m in (0, 30)}:
+            await q.message.reply_text(tr.get("app.invalid_option","Invalid option. Please choose again."))
+            return WAITING_MEETING_TIME
+        context.user_data["meeting_time"] = mt
     await q.message.reply_text(tr.get("extra.meeting_saved","Saved ✅"))
     await q.message.edit_text(tr.get("booking.ask_pax","How many passengers?"), reply_markup=_pax_keyboard(tr))
     return ASK_PASSENGER_COUNT

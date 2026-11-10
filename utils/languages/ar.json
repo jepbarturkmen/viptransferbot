@@ -26,6 +26,7 @@
     "ask_dropoff_type": "إلى أين التوصيل؟",
     "to_airport": "✈️ إلى المطار",
     "to_hotel": "🏨 إلى الفندق",
+    "to_custom": "📍 عنوان آخر",
     "to_aratransfer": "➡️ انتقال وسيط (عنوان مخصص)",
     "ask_dropoff_location": "📍 اختر أو ابحث عن موقع التسليم:",
     "ask_date": "📅 اختر التاريخ:",
@@ -50,7 +51,13 @@
     "confirm_no": "⬅️ تعديل",
     "summary_title": "📄 ملخص الحجز",
     "summary_text": "الاسم: {name}\nالهاتف: {phone}\nالتاريخ: {date} {time}\nمن: {from}\nإلى: {to}\nعدد الركاب: {pax}\nمقعد طفل: {baby_seat}\nإضافات: {extras}\nالرحلة: {flight}",
+    "summary_meeting_time": "وقت اللقاء: {meeting_time}",
     "submitted": "شكراً لك! تم استلام طلب الحجز ✅",
+    "cancelled": "تم إلغاء الحجز.",
+    "invalid": "بعض بيانات الحجز ناقصة أو غير صحيحة. يرجى مراجعتها.",
+    "invalid_name": "يرجى إدخال اسم يتراوح بين حرفين و100 حرف.",
+    "invalid_phone": "يرجى إدخال رقم هاتف صحيح مع رمز الدولة.",
+    "save_failed": "تعذر حفظ الحجز الآن. يرجى المحاولة مرة أخرى.",
     "sending_to_admin": "يتم إرسال التفاصيل إلى المشغل…"
   },
   "upload": {

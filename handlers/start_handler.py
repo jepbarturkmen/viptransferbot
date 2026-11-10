@@ -2,7 +2,7 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 from utils.language_loader import load_translations
-from utils.state import UserState
+from utils.state import reset_booking
 
 LANGUAGE_BUTTONS = [("Türkçe","tr"),("English","en"),("Русский","ru"),("Deutsch","de"),("العربية","ar")]
 
@@ -18,10 +18,7 @@ def main_menu_keyboard(tr):
     ])
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    UserState.set(user_id, "state", "choose_language")
-    # default language
-    lang = UserState.get(user_id).get("language", "tr")
+    lang = context.user_data.get("language", "tr")
     tr = load_translations(lang)
     if update.message:
         await update.message.reply_text(tr.get("choose_language","Dil seçin:"), reply_markup=language_keyboard())
@@ -32,15 +29,14 @@ async def language_selected(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     lang_code = query.data  # 'tr' | 'en' | ...
-    UserState.set(query.from_user.id, "language", lang_code)
-    context.user_data['lang'] = lang_code
-    UserState.set(query.from_user.id, "state", "main_menu")
+    context.user_data["language"] = lang_code
     tr = load_translations(lang_code)
     await query.message.edit_text(tr.get("main_menu","Main Menu"), reply_markup=main_menu_keyboard(tr))
 
 async def show_main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # works for both button and fallback
-    tr = load_translations(UserState.get(update.effective_user.id).get("language", "tr"))
+    reset_booking(context.user_data)
+    tr = load_translations(context.user_data.get("language", "tr"))
     if update.callback_query:
         await update.callback_query.answer()
         await update.callback_query.message.edit_text(tr.get("main_menu","Main Menu"), reply_markup=main_menu_keyboard(tr))

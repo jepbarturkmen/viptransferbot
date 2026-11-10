@@ -1,23 +1,21 @@
-from utils.state import UserState
-
 from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler
 from config import ADMIN_USER_ID
-from languages import load_translations
+from utils.language_loader import load_translations
 
 ASK_FILE = 1
 
 async def ask_for_pdf(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    lang = UserState.get(update.effective_user.id).get("language", context.user_data.get("lang","tr"))
+    lang = context.user_data.get("language", "tr")
     tr = load_translations(lang)
     await query.message.reply_text(tr.get("upload_prompt","Lütfen PDF veya görsel yükleyin."),
                                    reply_markup=None)
     return ASK_FILE
 
 async def receive_pdf(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    lang = UserState.get(update.effective_user.id).get("language", context.user_data.get("lang","tr"))
+    lang = context.user_data.get("language", "tr")
     tr = load_translations(lang)
 
     if update.message.document:

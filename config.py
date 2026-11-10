@@ -1,6 +1,7 @@
 # config.py
 import os
 from dotenv import load_dotenv
+from utils.environment import parse_admin_user_id
 
 # Lokal geliştirme için .env desteği (Railway'de etkisi olmaz ama lokal güzel olur)
 load_dotenv()
@@ -12,9 +13,14 @@ TOKEN = (
     or os.getenv("TOKEN")
 )
 
-ADMIN_USER_ID = int(os.getenv("8067876866", "0") or 0)
-
 if not TOKEN:
     raise RuntimeError(
         "TELEGRAM_BOT_TOKEN env missing. Set it in Railway Variables."
     )
+
+try:
+    ADMIN_USER_ID = parse_admin_user_id(os.getenv("ADMIN_USER_ID"))
+except ValueError as exc:
+    raise RuntimeError(str(exc)) from exc
+
+DATABASE_URL = os.getenv("DATABASE_URL")

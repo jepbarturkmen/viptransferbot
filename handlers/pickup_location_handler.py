@@ -2,7 +2,7 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import ContextTypes
 from utils.language_loader import load_translations
-from utils.state import UserState, reset_booking
+from utils.state import reset_booking
 from utils.excel_reader import get_airport_list, get_hotel_list
 from handlers.dropoff_location_handler import ask_dropoff_type
 from handlers.states import WAITING_PICKUP_CATEGORY, WAITING_PICKUP_LOCATION, WAITING_DROPOFF_CATEGORY
@@ -16,9 +16,8 @@ async def ask_pickup_type(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
-    user_id = query.from_user.id
-    reset_booking(user_id)
-    lang = UserState.get(user_id).get("language", "en")
+    reset_booking(context.user_data)
+    lang = context.user_data.get("language", "en")
     tr = load_translations(lang)
 
     keyboard = [
@@ -35,7 +34,7 @@ async def ask_pickup_location(update: Update, context: ContextTypes.DEFAULT_TYPE
     await query.answer()
 
     user_id = query.from_user.id
-    lang = UserState.get(user_id).get("language", "en")
+    lang = context.user_data.get("language", "en")
     tr = load_translations(lang)
 
     choice = query.data
@@ -73,7 +72,7 @@ async def receive_pickup_location(update: Update, context: ContextTypes.DEFAULT_
         query = update.callback_query
         await query.answer()
         user_id = query.from_user.id
-        lang = UserState.get(user_id).get("language", "en")
+        lang = context.user_data.get("language", "en")
         tr = load_translations(lang)
 
         data = query.data
@@ -82,7 +81,7 @@ async def receive_pickup_location(update: Update, context: ContextTypes.DEFAULT_
 
         if data.startswith("pickup_loc_"):
             loc = data.replace("pickup_loc_", "")
-            UserState.set(user_id, "pickup_location", loc)
+            context.user_data["pickup_location"] = loc
             await query.message.edit_text(f"{tr.get('pickup_confirmed','Pickup location saved')} ✅\n{loc}")
             # Move to dropoff type immediately
             await ask_dropoff_type(update, context)
@@ -95,13 +94,13 @@ async def receive_pickup_location(update: Update, context: ContextTypes.DEFAULT_
     else:
         # Text message (address typed)
         user_id = update.effective_user.id
-        lang = UserState.get(user_id).get("language", "en")
+        lang = context.user_data.get("language", "en")
         tr = load_translations(lang)
         loc = (update.message.text or "").strip()
-        if not loc:
+        if not loc or len(loc) > 300:
             await update.message.reply_text(tr.get("enter_pickup_address","Please enter the pickup address"))
             return WAITING_PICKUP_LOCATION
-        UserState.set(user_id, "pickup_location", loc)
+        context.user_data["pickup_location"] = loc
         await update.message.reply_text(f"{tr.get('pickup_confirmed','Pickup location saved')} ✅\n{loc}")
         # Proceed to dropoff
         await ask_dropoff_type(update, context)

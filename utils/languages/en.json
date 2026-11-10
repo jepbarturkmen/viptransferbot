@@ -26,6 +26,7 @@
     "ask_dropoff_type": "Where is the drop-off?",
     "to_airport": "✈️ To Airport",
     "to_hotel": "🏨 To Hotel",
+    "to_custom": "📍 Other address",
     "to_aratransfer": "➡️ Mid-route (Custom)",
     "ask_dropoff_location": "📍 Choose or search the drop-off location:",
     "ask_date": "📅 Select date:",
@@ -50,7 +51,13 @@
     "confirm_no": "⬅️ Edit",
     "summary_title": "📄 Booking Summary",
     "summary_text": "Name: {name}\nPhone: {phone}\nDate: {date} {time}\nFrom: {from}\nTo: {to}\nPAX: {pax}\nBaby seat: {baby_seat}\nExtras: {extras}\nFlight: {flight}",
+    "summary_meeting_time": "Meeting time: {meeting_time}",
     "submitted": "Thanks! Your booking request has been received ✅",
+    "cancelled": "Your booking was cancelled.",
+    "invalid": "Some booking details are missing or invalid. Please review them.",
+    "invalid_name": "Please enter a name between 2 and 100 characters.",
+    "invalid_phone": "Please enter a valid phone number with country code.",
+    "save_failed": "We couldn't save your booking right now. Please try again.",
     "sending_to_admin": "Sending details to the dispatcher…"
   },
   "upload": {

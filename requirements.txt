@@ -1,6 +1,8 @@
-python-telegram-bot==20.6
+python-telegram-bot[job-queue]==20.6
 APScheduler==3.10.4
 openpyxl==3.1.2
 python-dotenv==1.0.1
 pandas==2.2.2
-
+gspread==6.1.2
+google-auth==2.32.0
+psycopg[binary]==3.2.3

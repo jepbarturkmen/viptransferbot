@@ -1,8 +1,10 @@
 
+import re
+from datetime import date, datetime, timedelta
+
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import ContextTypes
 from utils.language_loader import load_translations
-from utils.state import UserState
 from utils.excel_reader import get_airport_list, get_hotel_list
 from handlers.extra_info_handler import ask_flight_number_if_airport, ask_meeting_time
 from handlers.passenger_info_handler import ask_name
@@ -33,32 +35,25 @@ def _date_keyboard():
 def _time_keyboard_with_back(tr):
     from utils.time_picker import generate_time_keyboard
     base = generate_time_keyboard()
-    try:
-        kb = list(base.inline_keyboard) if hasattr(base, "inline_keyboard") else None
-    except Exception:
-        kb = None
-    if not kb:
-        times = [f"{h:02d}:00" for h in range(24)]
-        kb, row = [], []
-        for i, t in enumerate(times):
-            row.append(InlineKeyboardButton(t, callback_data=f"time_{t}"))
-            if len(row) == 4:
-                kb.append(row); row = []
-        if row:
-            kb.append(row)
+    kb = [list(row) for row in base.inline_keyboard]
+    kb = [
+        [button for button in row if button.callback_data != "back_to_date"]
+        for row in kb
+    ]
+    kb = [row for row in kb if row]
     kb.append([InlineKeyboardButton(tr.get("app.back","⬅️ Back"), callback_data="back_to_date")])
     return InlineKeyboardMarkup(kb)
 
 async def ask_dropoff_type(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    user_id = query.from_user.id
-    lang = UserState.get(user_id).get("language", "en")
+    lang = context.user_data.get("language", "en")
     tr = load_translations(lang)
 
     keyboard = [
         [InlineKeyboardButton(tr.get("booking.to_airport","To Airport"), callback_data="dropoff_category_airport"),
          InlineKeyboardButton(tr.get("booking.to_hotel","To Hotel"), callback_data="dropoff_category_hotel")],
+        [InlineKeyboardButton(tr.get("booking.to_custom","Other address"), callback_data="dropoff_category_custom")],
         [InlineKeyboardButton(tr.get("app.back","⬅️ Back"), callback_data="back_to_menu")]
     ]
     await query.message.edit_text(tr.get("booking.select_dropoff_type","Please select dropoff type"),
@@ -68,8 +63,7 @@ async def ask_dropoff_type(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def ask_dropoff_location(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    user_id = query.from_user.id
-    lang = UserState.get(user_id).get("language", "en")
+    lang = context.user_data.get("language", "en")
     tr = load_translations(lang)
 
     choice = query.data
@@ -93,6 +87,11 @@ async def ask_dropoff_location(update: Update, context: ContextTypes.DEFAULT_TYP
 
     if choice == "dropoff_type_back":
         return await ask_dropoff_type(update, context)
+    if choice == "dropoff_category_custom":
+        await query.message.edit_text(
+            tr.get("booking.ask_custom_address", "Please enter the dropoff address")
+        )
+        return WAITING_DROPOFF_LOCATION
 
     await query.message.reply_text(tr.get("app.invalid_option","Invalid option. Please choose again."))
     return WAITING_DROPOFF_CATEGORY
@@ -101,30 +100,27 @@ async def receive_dropoff_location(update: Update, context: ContextTypes.DEFAULT
     if update.callback_query:
         query = update.callback_query
         await query.answer()
-        user_id = query.from_user.id
-        lang = UserState.get(user_id).get("language", "en")
-        tr = load_translations(lang)
         data = query.data
+        if data == "dropoff_type_back":
+            return await ask_dropoff_type(update, context)
         if data.startswith("dropoff_loc:"):
             loc = data.split("dropoff_loc:",1)[1]
         else:
             loc = data
-        UserState.set(user_id, "dropoff_location", loc)
+        context.user_data["dropoff_location"] = loc
         return await ask_date(update, context)
     else:
-        user_id = update.effective_user.id
-        lang = UserState.get(user_id).get("language", "en")
+        lang = context.user_data.get("language", "en")
         tr = load_translations(lang)
         loc = (update.message.text or "").strip()
-        if not loc:
+        if not loc or len(loc) > 300:
             await update.message.reply_text(tr.get("booking.enter_dropoff_address","Please enter the dropoff address"))
             return WAITING_DROPOFF_LOCATION
-        UserState.set(user_id, "dropoff_location", loc)
+        context.user_data["dropoff_location"] = loc
         return await ask_date(update, context)
 
 async def ask_date(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id if update.effective_user else None
-    lang = UserState.get(user_id).get("language", "en") if user_id else "en"
+    lang = context.user_data.get("language", "en")
     tr = load_translations(lang)
     msg = update.callback_query.message if update.callback_query else update.effective_message
     await msg.reply_text(tr.get("booking.select_date","Please select date"),
@@ -134,13 +130,22 @@ async def ask_date(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def receive_date(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
-    user_id = q.from_user.id
-    lang = UserState.get(user_id).get("language", "en")
+    lang = context.user_data.get("language", "en")
     tr = load_translations(lang)
     data = q.data
     if data.startswith("date_"):
         picked = data.replace("date_","",1)
-        UserState.set(user_id, "date", picked)
+        try:
+            selected_date = datetime.strptime(picked, "%Y-%m-%d (%a)").date()
+        except ValueError:
+            selected_date = None
+        today = date.today()
+        if selected_date is None or not today <= selected_date <= today + timedelta(days=89):
+            await q.message.reply_text(
+                tr.get("app.invalid_option","Invalid option. Please choose again.")
+            )
+            return WAITING_DATE
+        context.user_data["date"] = picked
         return await ask_time(update, context)
     await q.message.reply_text(tr.get("app.invalid_option","Invalid option. Please choose again."))
     return WAITING_DATE
@@ -151,8 +156,7 @@ async def back_to_date(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return await ask_date(update, context)
 
 async def ask_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id if update.effective_user else None
-    lang = UserState.get(user_id).get("language", "en") if user_id else "en"
+    lang = context.user_data.get("language", "en")
     tr = load_translations(lang)
     msg = update.callback_query.message if update.callback_query else update.effective_message
     await msg.reply_text(tr.get("booking.select_time","Please select time"),
@@ -162,15 +166,19 @@ async def ask_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def receive_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
-    user_id = q.from_user.id
-    lang = UserState.get(user_id).get("language", "en")
+    lang = context.user_data.get("language", "en")
     tr = load_translations(lang)
     data = q.data
     if data == "back_to_date":
         return await ask_date(update, context)
     if data.startswith("time_"):
         picked = data.replace("time_","",1)
-        UserState.set(user_id, "time", picked)
+        if not re.fullmatch(r"(?:[01]\d|2[0-3]):[0-5]\d", picked):
+            await q.message.reply_text(
+                tr.get("app.invalid_option","Invalid option. Please choose again.")
+            )
+            return WAITING_TIME
+        context.user_data["time"] = picked
         next_state = await ask_flight_number_if_airport(update, context)
         if next_state is None:
             next_state = await ask_meeting_time(update, context)
@@ -181,8 +189,7 @@ async def receive_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def receive_passenger_count(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    user_id = query.from_user.id
-    lang = UserState.get(user_id).get("language", "en")
+    lang = context.user_data.get("language", "en")
     tr = load_translations(lang)
     data = query.data
     val = None
@@ -193,8 +200,13 @@ async def receive_passenger_count(update: Update, context: ContextTypes.DEFAULT_
     elif data.startswith("pax_"):
         try:
             val = int(data.split("_",1)[1])
-        except Exception:
+        except ValueError:
             val = None
-    UserState.set(user_id, "passengers", val)
+    if val not in (1, 2, 3, 4, 5, "5-15", "15+"):
+        await query.message.reply_text(
+            tr.get("app.invalid_option","Invalid option. Please choose again.")
+        )
+        return ASK_PASSENGER_COUNT
+    context.user_data["passengers"] = val
     await query.message.reply_text(tr.get("booking.ask_name","Please enter passenger full name"))
     return WAITING_NAME

@@ -26,6 +26,7 @@
     "ask_dropoff_type": "Wohin ist die Abgabe?",
     "to_airport": "✈️ Zum Flughafen",
     "to_hotel": "🏨 Zum Hotel",
+    "to_custom": "📍 Andere Adresse",
     "to_aratransfer": "➡️ Zwischenstopp (benutzerdefiniert)",
     "ask_dropoff_location": "📍 Abgabeort wählen oder suchen:",
     "ask_date": "📅 Datum wählen:",
@@ -50,7 +51,13 @@
     "confirm_no": "⬅️ Bearbeiten",
     "summary_title": "📄 Buchungsübersicht",
     "summary_text": "Name: {name}\nTelefon: {phone}\nDatum: {date} {time}\nVon: {from}\nNach: {to}\nPersonen: {pax}\nKindersitz: {baby_seat}\nExtras: {extras}\nFlug: {flight}",
+    "summary_meeting_time": "Treffzeit: {meeting_time}",
     "submitted": "Danke! Ihre Anfrage wurde erhalten ✅",
+    "cancelled": "Ihre Buchung wurde storniert.",
+    "invalid": "Einige Buchungsdaten fehlen oder sind ungültig. Bitte überprüfen Sie sie.",
+    "invalid_name": "Bitte geben Sie einen Namen mit 2 bis 100 Zeichen ein.",
+    "invalid_phone": "Bitte geben Sie eine gültige Telefonnummer mit Ländervorwahl ein.",
+    "save_failed": "Ihre Buchung konnte gerade nicht gespeichert werden. Bitte versuchen Sie es erneut.",
     "sending_to_admin": "Details werden an den Dispatcher gesendet…"
   },
   "upload": {
